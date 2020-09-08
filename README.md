@@ -9,4 +9,4 @@ Web API
 Blazor
 Razor Pages
 ASP.NET Core Identity
-	/Identity/Account/Register
+/Identity/Account/Register
