@@ -37,7 +37,7 @@ namespace TestBlazorCoreMvc
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(); //MVC
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
@@ -69,9 +69,18 @@ namespace TestBlazorCoreMvc
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");//MVC
+                endpoints.MapRazorPages();//MVC
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
+
+                //루트 페이지 로드하자마자 특정 url로 이동하고자 할 때
+                endpoints.MapGet("/", context => {
+                    context.Response.Redirect("/Home"); //MVC 기본 페이지로 이동
+                    return Task.CompletedTask;
+                });
             });
         }
     }
